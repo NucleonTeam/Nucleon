@@ -1,0 +1,72 @@
+plugins {
+    id('java')
+}
+
+group('nucleon')
+version('1.0.0')
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenCentral()
+
+    maven { url('https://libraries.minecraft.net') }
+    maven { url('https://repo.nukkitx.com/maven-releases/') }
+    maven { url('https://repo.nukkitx.com/maven-snapshots/') }
+    maven { url('https://maven.ferenyr.info/artifactory/libs-release') }
+    maven { url('https://jitpack.io') }
+}
+
+ext {
+    brigadierVersion = '1.0.18'
+    protocolVersion = '2.9.11-SNAPSHOT'
+    nettyCommonVersion = '4.1.80.Final'
+    slf4jVersion = '1.7.36'
+    log4jVersion = '2.17.2'
+    teabeansVersion = '3.3.0'
+    configurateVersion = '4.1.2'
+    nbtVersion = '6.1'
+    fastutilVersion = '8.5.8'
+    commonsLang3Version = '3.12.0'
+    leveldbjniVersion = '1.9'
+    lombokVersion = '1.18.24'
+    junitJupiterVersion = '5.8.2'
+
+    minecraftBedrockProtocol = '544'
+}
+
+dependencies {
+    implementation(group: 'com.mojang', name: 'brigadier', version: brigadierVersion)
+    implementation(group: 'io.netty', name: 'netty-common', version: nettyCommonVersion)
+    implementation(group: 'com.nukkitx.protocol', name: "bedrock-v$minecraftBedrockProtocol", version: protocolVersion)
+    implementation(group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion)
+    implementation(group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion)
+    implementation(group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion)
+    implementation(group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion)
+    implementation(group: 'fr.ourten', name: 'teabeans', version: teabeansVersion)
+    implementation(group: 'org.spongepowered', name: 'configurate-core', version: configurateVersion)
+    implementation(group: 'org.spongepowered', name: 'configurate-yaml', version: configurateVersion)
+    implementation(group: 'org.spongepowered', name: 'configurate-gson', version: configurateVersion)
+    implementation(group: 'org.spongepowered', name: 'math', version: '2.0.1')
+    implementation(group: 'com.github.Querz', name: 'NBT', version: nbtVersion)
+    implementation(group: 'it.unimi.dsi', name: 'fastutil-core', version: fastutilVersion)
+    implementation( group: 'org.apache.commons', name: 'commons-lang3', version: commonsLang3Version)
+    implementation(group: 'com.github.huangtianhua', name: 'leveldbjni', version: leveldbjniVersion)
+    compileOnly(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
+    testCompileOnly(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
+    testImplementation(group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitJupiterVersion)
+    testImplementation(group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitJupiterVersion)
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': 'nucleon.bootstrap.Bootstrap')
+    }
+}
