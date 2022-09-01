@@ -1,5 +1,7 @@
 package nucleon.server;
 
+import nucleon.network.Network;
+
 public class Server {
     private static Server instance = null;
 
@@ -10,12 +12,18 @@ public class Server {
         return instance;
     }
 
+    private final Network network = new Network();
+
     private long tick = -1;
 
     private boolean started = false;
 
     public Server() {
         instance = this;
+    }
+
+    public Network getNetwork() {
+        return network;
     }
 
     public void startup() {
