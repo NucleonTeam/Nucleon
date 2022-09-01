@@ -3,16 +3,20 @@ package nucleon.server;
 import lombok.Getter;
 import nucleon.network.Network;
 
-public final class Server {
+public final class NucleonServer {
 
-    @Getter private static Server instance = null;
+    @Getter private static NucleonServer instance = null;
 
     @Getter private final ServerSettings settings;
 
-    public Server(ServerSettings settings) throws IllegalStateException {
+    public NucleonServer(ServerSettings settings) throws IllegalStateException {
         if (instance != null) throw new IllegalStateException("Server already initialized");
         instance = this;
         this.settings = settings;
+    }
+
+    public long getCurrentTick() {
+        return 0; // todo
     }
 
     private void init() {
