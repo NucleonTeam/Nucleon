@@ -6,11 +6,16 @@ group 'nucleon'
 version '1.0.0'
 
 repositories {
+    mavenCentral()
+}
 
+ext {
+    lombokVersion = '1.18.24'
 }
 
 dependencies {
-
+    compileOnly(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
+    annotationProcessor(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
 }
 
 test {
