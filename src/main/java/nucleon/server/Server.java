@@ -10,6 +10,8 @@ public class Server {
         return instance;
     }
 
+    private long tick = -1;
+
     private boolean started = false;
 
     public Server() {
@@ -28,5 +30,9 @@ public class Server {
             throw new IllegalStateException("Server instance not started");
         }
         started = false;
+    }
+
+    public long getTick() {
+        return tick;
     }
 }
