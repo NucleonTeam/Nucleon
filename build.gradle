@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'nucleon'
+version '1.0.0'
+
+repositories {
+
+}
+
+dependencies {
+
+}
+
+test {
+
+}
