@@ -8,8 +8,10 @@ public class Network {
 
     @Getter private static Network instance;
 
-    private Network(ServerSettings settings) {
+    @Getter private NetworkInterface networkInterface;
 
+    private Network(ServerSettings settings) {
+        networkInterface = new DefaultNetworkInterface(settings.getInetAddress());
     }
 
     public static Initializer init(ServerSettings settings) throws IllegalStateException {
@@ -24,6 +26,8 @@ public class Network {
             super(manager);
         }
 
-        // void setNetworkInterface(NetworkInterface)
+        public void setNetworkInterface(NetworkInterface newInterface) {
+            manager.networkInterface = newInterface;
+        }
     }
 }
