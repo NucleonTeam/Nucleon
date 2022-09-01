@@ -8,6 +8,8 @@ import java.util.Map;
 public class Network {
     private final Map<Class<? extends NetworkSource>, NetworkSource> sources = new HashMap<>();
 
+    private final Blocklist blocklist = new Blocklist();
+
     private boolean started = false;
 
     public void register(@NonNull NetworkSource source) {
@@ -29,6 +31,10 @@ public class Network {
             sources.get(sourceClass).shutdown();
         }
         sources.remove(sourceClass);
+    }
+
+    public Blocklist getBlocklist() {
+        return blocklist;
     }
 
     public void startup() {
