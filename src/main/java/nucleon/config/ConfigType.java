@@ -17,7 +17,7 @@ public enum ConfigType {
         public ConfigurationLoader<?> buildLoader(File file) {
             return YamlConfigurationLoader.builder()
                     .file(file)
-                    .nodeStyle(NodeStyle.FLOW)
+                    .nodeStyle(NodeStyle.BLOCK)
                     .build();
         }
     },

@@ -55,8 +55,8 @@ public final class PropertiesConfigurationLoader extends AbstractConfigurationLo
         Properties properties = new Properties(nodeMap.size());
 
         for (Map.Entry<Object, ? extends ConfigurationNode> entry : nodeMap.entrySet()) {
-            Object path = entry.getKey();
-            Object value = entry.getValue().raw();
+            Object path = String.valueOf(entry.getKey());
+            Object value = String.valueOf(entry.getValue().raw());
             properties.put(path, value);
         }
 
