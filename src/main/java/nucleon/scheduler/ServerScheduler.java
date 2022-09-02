@@ -42,13 +42,8 @@ public class ServerScheduler implements Scheduler {
     }
 
     private TaskAware registerTask(Task task, long delay, long period) {
-        if (delay < 0) {
-            throw new IllegalArgumentException("Negative delay");
-        }
-        if (period < 0) {
-            throw new IllegalArgumentException("Negative period");
-        }
-
+        Args.notNegative(delay, "Delay");
+        Args.notNegative(period, "Period");
         TaskAware aware = new TaskAware(task, delay, Math.max(period, 1));
         doScheduleTask(aware, false);
         return aware;
