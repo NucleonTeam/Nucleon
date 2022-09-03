@@ -6,12 +6,6 @@ import nucleon.network.Network;
 @Getter
 public class ServerInitializer {
 
-    private final Network.Initializer networkInitializer;
-
-    ServerInitializer(Network.Initializer networkInitializer) {
-        this.networkInitializer = networkInitializer;
-    }
-
     // ItemRegistry.Initializer getItemInitializer()
 
     // BlockRegistry.Initializer getBlockInitializer()

@@ -9,10 +9,13 @@ public final class NucleonServer {
 
     @Getter private final ServerSettings settings;
 
+    @Getter private final Network network;
+
     public NucleonServer(ServerSettings settings) throws IllegalStateException {
         if (instance != null) throw new IllegalStateException("Server already initialized");
         instance = this;
         this.settings = settings;
+        network = new Network(settings);
     }
 
     public long getCurrentTick() {
@@ -21,9 +24,7 @@ public final class NucleonServer {
 
     private void init() {
         // init: item, block, entity, world (generators), network
-        var initializer = new ServerInitializer(
-                Network.init(settings)
-        );
+        var initializer = new ServerInitializer();
         // load plugins. for each plugin run method onLoad(initializer)
         // block all initializers
     }
@@ -32,7 +33,7 @@ public final class NucleonServer {
         System.out.println("Starting Nucleon server...");
         init();
         // load levels
-        // run network interface
+        network.start();
         // for each plugin run method onEnable()
         // main loop
         onStop();
@@ -40,7 +41,7 @@ public final class NucleonServer {
 
     private void onStop() {
         // kick all players
-        // stop network interface
+        network.stop();
         // unload all worlds
         // unload plugins
     }
