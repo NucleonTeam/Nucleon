@@ -18,6 +18,7 @@ repositories {
     //maven { url('https://repo.nukkitx.com/maven-snapshots/') }
     maven { url('https://maven.ferenyr.info/artifactory/libs-release') }
     maven { url('https://jitpack.io') }
+    //maven { url('https://repo.codemc.org/repository/maven-public')}
 }
 
 ext {
@@ -34,6 +35,7 @@ ext {
     leveldbjniVersion = '1.9'
     lombokVersion = '1.18.24'
     junitJupiterVersion = '5.8.2'
+    nettyRaknetVersion = '0.8-SNAPSHOT'
 
     minecraftBedrockProtocol = '544'
 }
@@ -59,6 +61,7 @@ dependencies {
     annotationProcessor(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
     testImplementation(group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitJupiterVersion)
     testImplementation(group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitJupiterVersion)
+    //implementation(group: 'network.ycc', name: 'netty-raknet', version: nettyRaknetVersion)
 }
 
 test {
