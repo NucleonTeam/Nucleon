@@ -5,21 +5,26 @@ import nucleon.network.Network;
 
 import java.util.UUID;
 
-public final class NucleonServer {
+@Getter
+public class NucleonServer {
 
     public static final long ID = UUID.randomUUID().getMostSignificantBits();
 
-    @Getter private static NucleonServer instance = null;
+    @Getter
+    private static NucleonServer instance;
 
-    @Getter private final ServerSettings settings;
+    private final ServerSettings settings;
 
-    @Getter private final Network network;
+    private final Network network;
 
     public NucleonServer(ServerSettings settings) throws IllegalStateException {
-        if (instance != null) throw new IllegalStateException("Server already initialized");
-        instance = this;
+        if (NucleonServer.instance != null) {
+            throw new IllegalStateException("Server already initialized");
+        }
+
+        NucleonServer.instance = this;
         this.settings = settings;
-        network = new Network(settings);
+        this.network = new Network(settings);
     }
 
     public long getCurrentTick() {
@@ -35,17 +40,29 @@ public final class NucleonServer {
 
     public void start() {
         System.out.println("Starting Nucleon server...");
-        init();
+        this.init();
         // load levels
-        network.start();
+        this.network.start();
+
+        // start: delete after creating the main loop
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException exception) {
+            throw new RuntimeException(exception);
+        }
+        // end: delete after creating the main loop
+
         // for each plugin run method onEnable()
         // main loop
-        onStop();
+        this.onStop();
     }
 
     private void onStop() {
+        System.out.println("Stopping Nucleon server...");
         // kick all players
-        network.close();
+
+        System.out.println("Stopping network");
+        this.network.close();
         // unload all worlds
         // unload plugins
     }

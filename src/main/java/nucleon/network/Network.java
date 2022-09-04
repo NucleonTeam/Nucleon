@@ -37,12 +37,13 @@ import java.util.concurrent.TimeUnit;
 public class Network extends Thread {
 
     private final InetSocketAddress serverAddress;
-    private final EventLoopGroup workerGroup = new DefaultEventLoopGroup();
+    private final EventLoopGroup workerGroup;
     private EventLoopGroup bossGroup;
     private ChannelFuture channelFuture;
 
     public Network(ServerSettings settings) {
         this.serverAddress = settings.getInetAddress();
+        this.workerGroup = new DefaultEventLoopGroup();
     }
 
     @Override
@@ -66,6 +67,7 @@ public class Network extends Thread {
                 }
             }).childHandler(new ChannelInitializer<>() {
 
+                @SuppressWarnings("NullableProblems")
                 @Override
                 protected void initChannel(Channel channel) {
                     var channelConfig = channel.config();
@@ -96,7 +98,7 @@ public class Network extends Thread {
             }
 
             this.channelFuture = bootstrap.bind(this.serverAddress);
-            this.channelFuture.addListener($ -> log.info("Network started"));
+            this.channelFuture.addListener($ -> System.out.println("Network started"));
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -108,7 +110,9 @@ public class Network extends Thread {
             this.channelFuture.channel().closeFuture();
         } finally {
             this.workerGroup.shutdownGracefully();
-            this.bossGroup.shutdownGracefully();
+            if (this.bossGroup != null) {
+                this.bossGroup.shutdownGracefully();
+            }
         }
     }
 }

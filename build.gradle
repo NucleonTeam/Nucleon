@@ -1,5 +1,6 @@
 plugins {
-    id('java')
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group('nucleon')
@@ -19,43 +20,41 @@ repositories {
 }
 
 ext {
-    brigadierVersion = '1.0.18'
-    nettyCommonVersion = '4.1.80.Final'
-    slf4jVersion = '1.7.36'
-    log4jVersion = '2.17.2'
-    teabeansVersion = '3.3.0'
+    nettyVersion = '4.1.80.Final'
+    slf4jVersion = '2.0.0'
+    log4jVersion = '2.18.0'
     configurateVersion = '4.1.2'
-    nbtVersion = '6.1'
-    fastutilVersion = '8.5.8'
-    commonsLang3Version = '3.12.0'
-    leveldbjniVersion = '1.9'
     lombokVersion = '1.18.24'
-    junitJupiterVersion = '5.8.2'
+    junitJupiterVersion = '5.9.0'
 }
 
 dependencies {
     implementation files('lib/netty-raknet-common.jar')
     implementation files('lib/netty-raknet-server.jar')
 
-    implementation(group: 'com.mojang', name: 'brigadier', version: brigadierVersion)
-    implementation(group: 'io.netty', name: 'netty-handler', version: nettyCommonVersion)
-    implementation(group: 'io.netty', name: 'netty-buffer', version: nettyCommonVersion)
-    implementation(group: 'io.netty', name: 'netty-transport-classes-epoll', version: nettyCommonVersion)
+    implementation(group: 'com.mojang', name: 'brigadier', version: '1.0.18')
+
+    implementation(group: 'io.netty', name: 'netty-handler', version: nettyVersion)
+    implementation(group: 'io.netty', name: 'netty-transport-classes-epoll', version: nettyVersion)
+
     implementation(group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion)
     implementation(group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion)
     implementation(group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion)
     implementation(group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion)
-    implementation(group: 'fr.ourten', name: 'teabeans', version: teabeansVersion)
+
+    implementation(group: 'fr.ourten', name: 'teabeans', version: '3.3.0')
     implementation(group: 'org.spongepowered', name: 'configurate-core', version: configurateVersion)
     implementation(group: 'org.spongepowered', name: 'configurate-yaml', version: configurateVersion)
     implementation(group: 'org.spongepowered', name: 'configurate-gson', version: configurateVersion)
     implementation(group: 'org.spongepowered', name: 'math', version: '2.0.1')
-    implementation(group: 'com.github.Querz', name: 'NBT', version: nbtVersion)
-    implementation(group: 'it.unimi.dsi', name: 'fastutil-core', version: fastutilVersion)
-    implementation(group: 'org.apache.commons', name: 'commons-lang3', version: commonsLang3Version)
-    implementation(group: 'com.github.huangtianhua', name: 'leveldbjni', version: leveldbjniVersion)
+    implementation(group: 'com.github.Querz', name: 'NBT', version: '6.1')
+    implementation(group: 'it.unimi.dsi', name: 'fastutil-core', version: '8.5.8')
+    implementation(group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0')
+    implementation(group: 'com.github.huangtianhua', name: 'leveldbjni', version: '1.9')
+
     compileOnly(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
     annotationProcessor(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
+
     testImplementation(group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitJupiterVersion)
     testImplementation(group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitJupiterVersion)
 }
@@ -66,6 +65,6 @@ test {
 
 jar {
     manifest {
-        attributes('Main-Class': 'nucleon.bootstrap.Bootstrap')
+        attributes 'Main-Class': 'nucleon.Bootstrap'
     }
 }
