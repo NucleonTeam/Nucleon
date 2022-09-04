@@ -1,9 +1,8 @@
 package nucleon.plugin;
 
-public abstract class NucleonPlugin implements Plugin {
+public abstract class NucleonPlugin {
 
-    @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
