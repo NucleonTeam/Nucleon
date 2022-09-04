@@ -34,6 +34,7 @@ ext {
     leveldbjniVersion = '1.9'
     lombokVersion = '1.18.24'
     junitJupiterVersion = '5.8.2'
+    jacksonVersion = '2.13.3'
 
     minecraftBedrockProtocol = '544'
 }
@@ -53,8 +54,11 @@ dependencies {
     implementation(group: 'org.spongepowered', name: 'math', version: '2.0.1')
     implementation(group: 'com.github.Querz', name: 'NBT', version: nbtVersion)
     implementation(group: 'it.unimi.dsi', name: 'fastutil-core', version: fastutilVersion)
-    implementation( group: 'org.apache.commons', name: 'commons-lang3', version: commonsLang3Version)
+    implementation(group: 'org.apache.commons', name: 'commons-lang3', version: commonsLang3Version)
     implementation(group: 'com.github.huangtianhua', name: 'leveldbjni', version: leveldbjniVersion)
+    implementation(group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion)
+    implementation(group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-properties', version: jacksonVersion)
+    implementation(group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: jacksonVersion)
     compileOnly(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
     annotationProcessor(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
     testImplementation(group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitJupiterVersion)

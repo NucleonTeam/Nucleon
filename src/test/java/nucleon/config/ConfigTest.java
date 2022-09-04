@@ -13,138 +13,90 @@ public class ConfigTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConfigTest.class);
 
     @Test
-    public void doTestJson() {
-        var cfg = new Config(System.getProperty("user.dir") + "/test.json");
+    public void doTestProperties() {
+        TestProperties cfg = new TestProperties().load();
 
-        cfg.load();
+        LOGGER.info(cfg::toString);
 
-        String personName = "Dick";
-        int personAge = 21;
+        Assertions.assertEquals("den", cfg.name);
+        Assertions.assertEquals(12, cfg.age);
 
-        cfg.setNestedString("Person.Name", personName);
-        cfg.setNestedInt("Person.Age", personAge);
+        var name = "Jack";
+        var age = 21;
+
+        cfg.name = name;
+        cfg.age = age;
 
         cfg.save();
 
         String cfgContent;
 
         try {
-            cfgContent = Files.readString(cfg.getFile().toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
+            cfgContent = Files.readString(cfg.getConfigFile());
+        } catch (IOException exception) {
+            exception.printStackTrace();
             return;
         }
 
         LOGGER.debug(() -> cfgContent);
 
-        cfg.getFile().delete();
+        cfg.getConfigFile().toFile().delete();
 
-        String expected =
-                "{" +
-                    "\"Person\":{" +
-                        "\"Name\":\"" + personName + "\"," +
-                        "\"Age\":" + personAge +
-                    "}" +
-                "}";
+        String expected = "name=" + name + "\nage=" + age;
         Assertions.assertEquals(expected.trim(), cfgContent.trim());
     }
 
     @Test
     public void doTestYaml() {
-        var cfg = new Config(System.getProperty("user.dir") + "/test.yaml");
+        TestYaml cfg = new TestYaml().load();
 
-        cfg.load();
+        LOGGER.info(cfg::toString);
 
-        String personName = "Dick";
-        int personAge = 21;
+        Assertions.assertEquals("den", cfg.name);
+        Assertions.assertEquals(12, cfg.age);
 
-        cfg.setNestedString("Person.Name", personName);
-        cfg.setNestedInt("Person.Age", personAge);
+        var name = "Jack";
+        var age = 21;
+
+        cfg.name = name;
+        cfg.age = age;
 
         cfg.save();
 
         String cfgContent;
 
         try {
-            cfgContent = Files.readString(cfg.getFile().toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
+            cfgContent = Files.readString(cfg.getConfigFile());
+        } catch (IOException exception) {
+            exception.printStackTrace();
             return;
         }
 
         LOGGER.debug(() -> cfgContent);
 
-        cfg.getFile().delete();
+        cfg.getConfigFile().toFile().delete();
 
-        String expected =
-                "Person:\n" +
-                "    Name: " + personName + "\n" +
-                "    Age: " + personAge;
+        String expected = "---\n" + "name: \"" + name + "\"\n" + "age: " + age;
         Assertions.assertEquals(expected.trim(), cfgContent.trim());
     }
 
-    @Test
-    public void doTestProps() {
-        var cfg = new Config(System.getProperty("user.dir") + "/test.props");
+    public static class TestProperties extends PropertiesConfig {
 
-        cfg.load();
+        public String name = "den"; // Default value
+        public int age = 12; // Default value
 
-        String personName = "Dick";
-        int personAge = 21;
-
-        cfg.setNestedString("Person.Name", personName);
-        cfg.setNestedInt("Person.Age", personAge);
-
-        cfg.save();
-
-        String cfgContent;
-
-        try {
-            cfgContent = Files.readString(cfg.getFile().toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
+        public TestProperties() {
+            super("test.properties");
         }
-
-        LOGGER.debug(   () -> cfgContent);
-
-        cfg.getFile().delete();
-
-        // todo
-        //String expected = "Person={Name\\=" + personName + ", Age\\=" + personAge + "}";
-        //Assertions.assertEquals(expected.trim(), cfgContent.trim());
     }
 
-    @Test
-    public void doTestEnum() {
-        var cfg = new Config(System.getProperty("user.dir") + "/test.enum");
+    public static class TestYaml extends YamlConfig {
 
-        cfg.load();
+        public String name = "den"; // Default value
+        public int age = 12; // Default value
 
-        String personName = "Dick";
-        int personAge = 21;
-
-        cfg.setString("0", personName);
-        cfg.setInt("1", personAge);
-
-        cfg.save();
-
-        String cfgContent;
-
-        try {
-            cfgContent = Files.readString(cfg.getFile().toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
+        public TestYaml() {
+            super("test.yml");
         }
-
-        LOGGER.info(() -> cfgContent);
-
-        cfg.getFile().delete();
-
-        // todo
-
-        //String expected = personName + System.lineSeparator() + personAge;
-        //Assertions.assertEquals(expected.trim(), cfgContent.trim());
     }
 }
