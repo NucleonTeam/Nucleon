@@ -14,7 +14,6 @@
         <java.version>11</java.version>
         <spongepowered.version>4.1.2</spongepowered.version>
         <log4j.version>2.18.0</log4j.version>
-        <jackson.version>2.13.3</jackson.version>
         <junit.jupiter.version>5.9.0</junit.jupiter.version>
     </properties>
 
@@ -141,26 +140,6 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>${log4j.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <!-- Jackson -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-properties</artifactId>
-            <version>${jackson.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>${jackson.version}</version>
             <scope>compile</scope>
         </dependency>
 
