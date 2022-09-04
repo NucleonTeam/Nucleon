@@ -8,7 +8,9 @@ import java.lang.reflect.Method;
 
 public final class PluginManager {
 
-    public void registerEventListener(Listener listener, Plugin plugin) {
+    // todo: NucleonPlugin#registerListener(Listener)
+    @Deprecated
+    public void registerEventListener(Listener listener, NucleonPlugin plugin) {
         Args.notNull(listener, "Listener");
         Args.notNull(plugin, "Plugin");
 
@@ -30,7 +32,7 @@ public final class PluginManager {
     }
 
     @SuppressWarnings("unchecked")
-    private void registerEventHandlerMethod(Listener listener, Plugin plugin, Method method) {
+    private void registerEventHandlerMethod(Listener listener, NucleonPlugin plugin, Method method) {
         if (!Utils.isConcreteMethod(method)) {
             throw new PluginException("");
         }
@@ -51,7 +53,7 @@ public final class PluginManager {
                 (Class<? extends Event>) paramType,
                 handler.priority(),
                 handler.handleCancelled(),
-                new MethodEventHandler<>(method, listener),
+                new MethodEventFilter<>(method, listener),
                 plugin);
     }
 
@@ -59,8 +61,8 @@ public final class PluginManager {
             Class<T> eventClass,
             EventPriority priority,
             boolean handleCancelled,
-            nucleon.event.EventHandler<T> handler,
-            Plugin plugin) {
+            EventFilter<T> handler,
+            NucleonPlugin plugin) {
         Args.notNull(eventClass, "Event class");
         Args.notNull(priority, "Priority");
         Args.notNull(handler, "Handler");
@@ -70,7 +72,7 @@ public final class PluginManager {
             throw new IllegalArgumentException("Attempt to register an event handler in a not enabled plugin");
         }
 
-        HandlerAware<T> aware = new HandlerAware<>(priority, handleCancelled, handler, plugin);
-        HandlerListManager.GLOBAL.acquireListFor(eventClass).register(aware);
+        FilterAware<T> aware = new FilterAware<>(priority, handleCancelled, handler, plugin);
+        FilterChainManager.GLOBAL.acquireChainFor(eventClass).register(aware);
     }
 }

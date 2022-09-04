@@ -1,6 +1,10 @@
 package nucleon.event;
 
-public class EventException extends RuntimeException{
+public class EventException extends RuntimeException {
+
+    public EventException() {
+        super();
+    }
 
     public EventException(String message) {
         super(message);

@@ -1,6 +1,15 @@
 package nucleon.event;
 
-public interface EventHandler<T extends Event> {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    void handle(T event);
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface EventHandler {
+
+    EventPriority priority() default EventPriority.NORMAL;
+
+    boolean handleCancelled() default false;
 }
