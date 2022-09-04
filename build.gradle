@@ -14,8 +14,8 @@ repositories {
     mavenCentral()
 
     maven { url('https://libraries.minecraft.net') }
-    maven { url('https://repo.nukkitx.com/maven-releases/') }
-    maven { url('https://repo.nukkitx.com/maven-snapshots/') }
+    //maven { url('https://repo.nukkitx.com/maven-releases/') }
+    //maven { url('https://repo.nukkitx.com/maven-snapshots/') }
     maven { url('https://maven.ferenyr.info/artifactory/libs-release') }
     maven { url('https://jitpack.io') }
 }
@@ -41,7 +41,7 @@ ext {
 dependencies {
     implementation(group: 'com.mojang', name: 'brigadier', version: brigadierVersion)
     implementation(group: 'io.netty', name: 'netty-common', version: nettyCommonVersion)
-    implementation(group: 'com.nukkitx.protocol', name: "bedrock-v$minecraftBedrockProtocol", version: protocolVersion)
+    //implementation(group: 'com.nukkitx.protocol', name: "bedrock-v$minecraftBedrockProtocol", version: protocolVersion)
     implementation(group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion)
     implementation(group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion)
     implementation(group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion)
