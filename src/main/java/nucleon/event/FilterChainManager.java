@@ -6,9 +6,9 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class HandlerListManager {
+public final class FilterChainManager {
 
-    public static final HandlerListManager GLOBAL = new HandlerListManager();
+    public static final FilterChainManager GLOBAL = new FilterChainManager();
 
     @SuppressWarnings("unchecked")
     private static Class<? extends Event> resolveNearestHandleableParent(Class<? extends Event> eventClass) {
@@ -29,24 +29,27 @@ public final class HandlerListManager {
         return !Modifier.isAbstract(eventClass.getModifiers()) || eventClass.isAnnotationPresent(AllowHandle.class);
     }
 
-    private final Map<Class<? extends Event>, HandlerList<?>> allLists = new HashMap<>();
+    private final Map<Class<? extends Event>, FilterChain<?>> event2chainMap = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public <T extends Event> HandlerList<T> acquireListFor(Class<? extends T> eventClass) {
+    public <T extends Event> FilterChain<T> acquireChainFor(Class<? extends T> eventClass) {
         Args.notNull(eventClass, "Event class");
 
-        if (allLists.containsKey(eventClass)) {
-            return (HandlerList<T>) allLists.get(eventClass);
+        if (event2chainMap.containsKey(eventClass)) {
+            return (FilterChain<T>) event2chainMap.get(eventClass);
         }
 
         Class<? extends Event> superclass = resolveNearestHandleableParent(eventClass);
-        HandlerList<? super T> parentQueue;
-        if (superclass == null)
-            parentQueue = null;
-        else
-            parentQueue = acquireListFor(superclass);
-        HandlerList<T> list = new HandlerList<>(eventClass, parentQueue);
-        allLists.put(eventClass, list);
+        FilterChain<? super T> parentChain;
+
+        if (superclass == null) {
+            parentChain = null;
+        } else {
+            parentChain = acquireChainFor(superclass);
+        }
+
+        FilterChain<T> list = new FilterChain<>(eventClass, parentChain);
+        event2chainMap.put(eventClass, list);
         return list;
     }
 }

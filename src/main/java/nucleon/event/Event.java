@@ -2,7 +2,7 @@ package nucleon.event;
 
 public abstract class Event {
 
-    private static final int RECURSION_DEPTH_LIMIT = 50;
+    private static final int RECURSION_DEPTH_LIMIT = 64;
 
     private final ThreadLocal<Integer> recursionDepth = ThreadLocal.withInitial(() -> 0);
 
@@ -12,16 +12,16 @@ public abstract class Event {
         int recursionDepthValue = recursionDepth.get();
 
         if (recursionDepthValue >= RECURSION_DEPTH_LIMIT) {
-            throw new EventException("");
+            throw new EventException("Recursion depth exceeded the limit value (" + RECURSION_DEPTH_LIMIT + ")");
         }
 
         try {
             recursionDepth.set(recursionDepthValue + 1);
 
-            HandlerList<?> list = HandlerListManager.GLOBAL.acquireListFor(getClass());
+            FilterChain<?> list = FilterChainManager.GLOBAL.acquireChainFor(getClass());
 
             do {
-                list.handleOrdered(this);
+                list.execute(this);
                 list = list.getParent();
             } while (list != null);
         } finally {
@@ -40,11 +40,7 @@ public abstract class Event {
         }
     }
 
-    public final boolean isCancelled() {
-        return cancelled;
-    }
+    public final boolean isCancelled() { return cancelled; }
 
-    public final String name() {
-        return getClass().getSimpleName();
-    }
+    public final String name() { return getClass().getSimpleName(); }
 }
