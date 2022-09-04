@@ -3,7 +3,11 @@ package nucleon.server;
 import lombok.Getter;
 import nucleon.network.Network;
 
+import java.util.UUID;
+
 public final class NucleonServer {
+
+    public static final long ID = UUID.randomUUID().getMostSignificantBits();
 
     @Getter private static NucleonServer instance = null;
 
@@ -41,7 +45,7 @@ public final class NucleonServer {
 
     private void onStop() {
         // kick all players
-        network.stop();
+        network.close();
         // unload all worlds
         // unload plugins
     }
