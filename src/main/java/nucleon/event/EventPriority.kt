@@ -1,7 +1,6 @@
-package nucleon.event;
+package nucleon.event
 
-public enum EventPriority {
-
+enum class EventPriority {
     LOWEST,
     LOW,
     NORMAL,
