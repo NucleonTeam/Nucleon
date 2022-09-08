@@ -17,6 +17,8 @@ public class NucleonServer {
 
     private final Network network;
 
+    private boolean enabled = true;
+
     public NucleonServer(ServerSettings settings) throws IllegalStateException {
         if (NucleonServer.instance != null) {
             throw new IllegalStateException("Server already initialized");
@@ -53,7 +55,15 @@ public class NucleonServer {
         // end: delete after creating the main loop
 
         // for each plugin run method onEnable()
-        // main loop
+
+        while (enabled) { // main loop for keep server running
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+
+        }
         this.onStop();
     }
 
@@ -65,5 +75,9 @@ public class NucleonServer {
         this.network.close();
         // unload all worlds
         // unload plugins
+    }
+
+    public void stop() {
+        enabled = false;
     }
 }
