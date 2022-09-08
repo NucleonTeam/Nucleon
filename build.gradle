@@ -2,6 +2,7 @@ plugins {
     id('java')
     id('application')
     id('com.github.johnrengelman.shadow').version('7.1.2')
+    id('org.jetbrains.kotlin.jvm').version('1.7.10')
 }
 
 group('nucleon')
@@ -41,4 +42,16 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = java.targetCompatibility.toString()
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = java.targetCompatibility.toString()
+    }
 }
