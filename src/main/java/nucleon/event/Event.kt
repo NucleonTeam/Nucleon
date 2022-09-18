@@ -1,10 +1,12 @@
 package nucleon.event
 
-abstract class Event(private val target: EventTarget? = null) {
+abstract class Event(
+    private val target: EventTarget? = null
+) {
 
-    companion object {
-        private val RECURSION_DEPTH = ThreadLocal.withInitial { 0 }
-        private const val RECURSION_DEPTH_LIMIT = 64
+    private companion object {
+        val RECURSION_DEPTH: ThreadLocal<Int> = ThreadLocal.withInitial { 0 }
+        const val RECURSION_DEPTH_LIMIT = 64
     }
 
     var cancelled = false
