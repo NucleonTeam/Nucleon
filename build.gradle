@@ -1,7 +1,7 @@
 plugins {
     id "java"
     id "application"
-    id "com.github.johnrengelman.shadow" version "7.1.2"  // shadowJar plugin
+    id "com.github.johnrengelman.shadow" version "7.1.2" // shadowJar plugin
     id "org.jetbrains.kotlin.jvm" version "1.7.10" // kotlin plugin
 }
 
@@ -20,7 +20,7 @@ application {
 repositories {
     mavenCentral()
     maven { url "https://repo.nukkitx.com/maven-releases/" }
-    maven { url "https://repo.nukkitx.com/maven-snapshots/" }
+    maven { url "https://repo.opencollab.dev/maven-snapshots/" }
 }
 
 ext {
@@ -28,8 +28,6 @@ ext {
     commonsLang3Version = '3.12.0'
     slf4jVersion = '1.7.36'
     log4jVersion = '2.17.2'
-    nettyCommonVersion = '4.1.81.Final' // Fix bedrock-codec vulnerable warning
-    protocolVersion = '3.0.6-SNAPSHOT'
     lombokVersion = '1.18.24'
     junitJupiterVersion = '5.8.2'
 }
@@ -39,10 +37,11 @@ dependencies {
     implementation(group: 'org.apache.commons', name: 'commons-lang3', version: commonsLang3Version)
     implementation(group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion)
     implementation(group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion)
-    implementation(group: 'io.netty', name: 'netty-common', version: nettyCommonVersion)
-    implementation(group: 'org.cloudburstmc.protocol', name: 'bedrock-codec', version: protocolVersion)
+    implementation(group: 'com.nukkitx.protocol', name: 'bedrock-v553', version: '2.9.12-SNAPSHOT')
+
     compileOnly(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
     annotationProcessor(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
+
     testImplementation(group: 'org.junit.jupiter', name: 'junit-jupiter', version: junitJupiterVersion)
 }
 
