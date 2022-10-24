@@ -1,12 +1,12 @@
 plugins {
-    id "java"
-    id "application"
-    id "com.github.johnrengelman.shadow" version "7.1.2"  // shadowJar plugin
-    id "org.jetbrains.kotlin.jvm" version "1.7.10" // kotlin plugin
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'  // shadowJar plugin
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10' // kotlin plugin
 }
 
-group "nucleon"
-version "1.0-SNAPSHOT"
+group 'nucleon'
+version '1.0-SNAPSHOT'
 
 java {
     sourceCompatibility JavaVersion.VERSION_11
@@ -14,35 +14,37 @@ java {
 }
 
 application {
-    mainClassName "nucleon.Bootstrap"
+    mainClassName 'nucleon.Bootstrap'
 }
 
 repositories {
     mavenCentral()
-    maven { url "https://repo.nukkitx.com/maven-releases/" }
-    maven { url "https://repo.nukkitx.com/maven-snapshots/" }
+    maven { url 'https://repo.nukkitx.com/maven-releases/' }
+    maven { url 'https://repo.nukkitx.com/maven-snapshots/' }
 }
 
 ext {
-    fastutilVersion = '8.5.8'
-    commonsLang3Version = '3.12.0'
     slf4jVersion = '1.7.36'
     log4jVersion = '2.17.2'
-    nettyCommonVersion = '4.1.81.Final' // Fix bedrock-codec vulnerable warning
-    protocolVersion = '3.0.6-SNAPSHOT'
+    guavaVersion = '31.1-jre'
+    commonsLang3Version = '3.12.0'
+    fastutilVersion = '8.5.8'
+    protocolVersion = '3.0.9-SNAPSHOT'
     lombokVersion = '1.18.24'
     junitJupiterVersion = '5.8.2'
 }
 
 dependencies {
-    implementation(group: 'it.unimi.dsi', name: 'fastutil-core', version: fastutilVersion)
-    implementation(group: 'org.apache.commons', name: 'commons-lang3', version: commonsLang3Version)
     implementation(group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion)
-    implementation(group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion)
-    implementation(group: 'io.netty', name: 'netty-common', version: nettyCommonVersion)
+    implementation(group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion) {
+        exclude(group: 'org.slf4j', module: 'slf4j-api');
+    }
+    implementation(group: 'com.google.guava', name: 'guava', version: guavaVersion)
+    implementation(group: 'org.apache.commons', name: 'commons-lang3', version: commonsLang3Version)
+    implementation(group: 'it.unimi.dsi', name: 'fastutil-core', version: fastutilVersion)
     implementation(group: 'org.cloudburstmc.protocol', name: 'bedrock-codec', version: protocolVersion)
-    compileOnly(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
     annotationProcessor(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
+    compileOnly(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
     testImplementation(group: 'org.junit.jupiter', name: 'junit-jupiter', version: junitJupiterVersion)
 }
 
@@ -51,13 +53,9 @@ test {
 }
 
 compileKotlin {
-    kotlinOptions {
-        jvmTarget = java.targetCompatibility.toString()
-    }
+    kotlinOptions.jvmTarget = java.targetCompatibility
 }
 
 compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = java.targetCompatibility.toString()
-    }
+    kotlinOptions.jvmTarget = java.targetCompatibility
 }
