@@ -1,7 +1,7 @@
 package nucleon.network;
 
 import com.nukkitx.protocol.bedrock.*;
-import com.nukkitx.protocol.bedrock.v553.Bedrock_v553;
+import com.nukkitx.protocol.bedrock.v557.Bedrock_v557;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 
@@ -10,7 +10,7 @@ import java.util.concurrent.CompletionException;
 
 public class Network implements BedrockServerEventHandler {
 
-    public static final BedrockPacketCodec CODEC = Bedrock_v553.V553_CODEC;
+    public static final BedrockPacketCodec CODEC = Bedrock_v557.V557_CODEC;
 
     private final BedrockServer bedrockServer;
 
@@ -43,9 +43,9 @@ public class Network implements BedrockServerEventHandler {
     public BedrockPong onQuery(InetSocketAddress address) {
         this.bedrockPong.setEdition("MCPE");
         this.bedrockPong.setGameType("creative");
-        this.bedrockPong.setMotd("test motd");
-        this.bedrockPong.setSubMotd("test sub-motd");
-        this.bedrockPong.setPlayerCount(2);
+        this.bedrockPong.setMotd("Nucleon server");
+        this.bedrockPong.setSubMotd("Test server");
+        this.bedrockPong.setPlayerCount(0);
         this.bedrockPong.setMaximumPlayerCount(5);
 
         var bindPort = this.bedrockServer.getBindAddress().getPort();
@@ -60,12 +60,13 @@ public class Network implements BedrockServerEventHandler {
 
     @Override
     public void onSessionCreation(BedrockServerSession serverSession) {
-        System.out.println("Session: " + serverSession);
-        // session create
+        System.out.println("[" + serverSession.getAddress().toString() + "] connected to the server");
+        serverSession.addDisconnectHandler((reason) -> System.out.println("[" + serverSession.getAddress().toString() + "] disconnected"));
+        serverSession.setPacketHandler(new PlayerPacketHandler(serverSession));
     }
 
     @Override
     public void onUnhandledDatagram(ChannelHandlerContext context, DatagramPacket packet) {
-        BedrockServerEventHandler.super.onUnhandledDatagram(context, packet);
+
     }
 }
