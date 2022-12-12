@@ -4,6 +4,8 @@ import com.nukkitx.network.util.DisconnectReason;
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
 import lombok.Getter;
 import lombok.NonNull;
+import nucleon.event.player.PlayerDisconnectEvent;
+import nucleon.event.player.PlayerLoginEvent;
 
 import java.util.UUID;
 
@@ -43,12 +45,16 @@ public final class Player {
     private void onLogin() {
         PlayerManager.getInstance().addPlayer(this);
         session.addDisconnectHandler(this::onQuit);
-        System.out.println("joined");
+
+        var loginEvent = new PlayerLoginEvent(this);
+        loginEvent.call();
     }
 
     private void onQuit(DisconnectReason reason) {
         disconnected = true;
         PlayerManager.getInstance().removePlayer(this);
-        System.out.println("quited");
+
+        var disconnectEvent = new PlayerDisconnectEvent(this, reason);
+        disconnectEvent.call();
     }
 }
