@@ -72,8 +72,7 @@ public class PlayerLoginPacketHandler implements BedrockPacketHandler {
                     return false;
 
                 case ACCEPTED:
-                    session.setPacketHandler(new ResourcePackPacketHandler(session, chainData));
-                    sendPlayStatusPacket(PlayStatusPacket.Status.LOGIN_SUCCESS);
+                    login(chainData);
                     break;
             }
 
@@ -82,5 +81,14 @@ public class PlayerLoginPacketHandler implements BedrockPacketHandler {
             return false;
         }
         return true;
+    }
+
+    private void login(PlayerChainData chainData) {
+        session.setPacketHandler(new ResourcePackPacketHandler(session, chainData));
+        sendPlayStatusPacket(PlayStatusPacket.Status.LOGIN_SUCCESS);
+
+        var pk = new ResourcePacksInfoPacket();
+        //TODO: send information about texture and behavior packs
+        session.sendPacket(pk);
     }
 }

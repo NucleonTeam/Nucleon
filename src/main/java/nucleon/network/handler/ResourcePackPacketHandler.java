@@ -2,6 +2,9 @@ package nucleon.network.handler;
 
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
+import com.nukkitx.protocol.bedrock.packet.ResourcePackChunkRequestPacket;
+import com.nukkitx.protocol.bedrock.packet.ResourcePackClientResponsePacket;
+import nucleon.player.Player;
 import nucleon.player.PlayerChainData;
 
 public class ResourcePackPacketHandler implements BedrockPacketHandler {
@@ -14,4 +17,24 @@ public class ResourcePackPacketHandler implements BedrockPacketHandler {
         this.chainData = chainData;
     }
 
+    @Override
+    public boolean handle(ResourcePackClientResponsePacket packet) {
+        //TODO: implement loading packs
+
+        complete();
+        return true;
+    }
+
+    @Override
+    public boolean handle(ResourcePackChunkRequestPacket packet) {
+        //TODO
+        return true;
+    }
+
+    private void complete() {
+        var player = new Player(chainData, session);
+        var handler = new InGamePacketHandler(session, player);
+        session.setPacketHandler(handler);
+        handler.sendStartGamePacket();
+    }
 }
