@@ -54,7 +54,6 @@ public class PlayerLoginPacketHandler implements BedrockPacketHandler {
     @Override
     public boolean handle(LoginPacket packet) {
         var chainData = PlayerChainData.read(packet);
-        //TODO: checking xbox authorization
 
         session.setPacketHandler(new ResourcePackPacketHandler(session, chainData));
 
