@@ -1,22 +1,24 @@
-package nucleon.network;
+package nucleon.network.handler;
 
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
 import com.nukkitx.protocol.bedrock.data.PacketCompressionAlgorithm;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.packet.*;
+import nucleon.network.Network;
+import nucleon.player.PlayerChainData;
 
-public class PlayerPacketHandler implements BedrockPacketHandler {
+public class PlayerLoginPacketHandler implements BedrockPacketHandler {
 
-    private final BedrockServerSession serverSession;
+    private final BedrockServerSession session;
 
-    public PlayerPacketHandler(BedrockServerSession serverSession) {
-        this.serverSession = serverSession;
+    public PlayerLoginPacketHandler(BedrockServerSession serverSession) {
+        this.session = serverSession;
     }
 
     private void sendPlayStatusPacket(PlayStatusPacket.Status status) {
         var pk = new PlayStatusPacket();
         pk.setStatus(status);
-        serverSession.sendPacket(pk);
+        session.sendPacket(pk);
     }
 
     @Override
@@ -34,7 +36,7 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
 
             var disconnectPacket = new DisconnectPacket();
             disconnectPacket.setKickMessage(disconnectMessage);
-            serverSession.sendPacket(packet);
+            session.sendPacket(packet);
             return false;
         }
 
@@ -42,10 +44,21 @@ public class PlayerPacketHandler implements BedrockPacketHandler {
         pk.setCompressionAlgorithm(PacketCompressionAlgorithm.ZLIB);
         pk.setCompressionThreshold(1);
 
-        serverSession.setCompression(PacketCompressionAlgorithm.ZLIB);
-        serverSession.setPacketCodec(Network.CODEC);
+        session.setCompression(PacketCompressionAlgorithm.ZLIB);
+        session.setPacketCodec(Network.CODEC);
 
-        serverSession.sendPacketImmediately(pk);
+        session.sendPacketImmediately(pk);
+        return true;
+    }
+
+    @Override
+    public boolean handle(LoginPacket packet) {
+        var chainData = PlayerChainData.read(packet);
+        //TODO: checking xbox authorization
+
+        session.setPacketHandler(new ResourcePackPacketHandler(session, chainData));
+
+        sendPlayStatusPacket(PlayStatusPacket.Status.LOGIN_SUCCESS);
         return true;
     }
 }

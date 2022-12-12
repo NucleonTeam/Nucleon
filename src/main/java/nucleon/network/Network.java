@@ -4,6 +4,7 @@ import com.nukkitx.protocol.bedrock.*;
 import com.nukkitx.protocol.bedrock.v560.Bedrock_v560;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
+import nucleon.network.handler.PlayerLoginPacketHandler;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.CompletionException;
@@ -62,7 +63,7 @@ public class Network implements BedrockServerEventHandler {
     public void onSessionCreation(BedrockServerSession serverSession) {
         System.out.println("[" + serverSession.getAddress().toString() + "] connected to the server");
         serverSession.addDisconnectHandler((reason) -> System.out.println("[" + serverSession.getAddress().toString() + "] disconnected"));
-        serverSession.setPacketHandler(new PlayerPacketHandler(serverSession));
+        serverSession.setPacketHandler(new PlayerLoginPacketHandler(serverSession));
     }
 
     @Override
