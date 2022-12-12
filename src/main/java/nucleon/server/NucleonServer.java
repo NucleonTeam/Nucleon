@@ -8,6 +8,7 @@ public final class NucleonServer {
     @Getter private static NucleonServer instance = null;
 
     @Getter private final ServerSettings settings;
+    @Getter private volatile boolean started;
 
     @Getter private final Network network;
 
@@ -15,7 +16,7 @@ public final class NucleonServer {
         if (instance != null) throw new IllegalStateException("Server already initialized");
         instance = this;
         this.settings = settings;
-        network = new Network(settings);
+        network = new Network(settings.getInetAddress());
     }
 
     public long getCurrentTick() {
@@ -34,8 +35,14 @@ public final class NucleonServer {
         init();
         // load levels
         network.start();
+
+        started = true;
         // for each plugin run method onEnable()
         // main loop
+        while (started) {
+            Thread.onSpinWait();
+        }
+
         onStop();
     }
 
