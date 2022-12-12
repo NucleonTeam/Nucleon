@@ -19,7 +19,7 @@ application {
 
 repositories {
     mavenCentral()
-    maven { url "https://repo.nukkitx.com/maven-releases/" }
+    maven { url "https://repo.opencollab.dev/maven-releases/" }
     maven { url "https://repo.opencollab.dev/maven-snapshots/" }
 }
 
@@ -37,7 +37,7 @@ dependencies {
     implementation(group: 'org.apache.commons', name: 'commons-lang3', version: commonsLang3Version)
     implementation(group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion)
     implementation(group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion)
-    implementation(group: 'com.nukkitx.protocol', name: 'bedrock-v557', version: '2.9.14-SNAPSHOT')
+    implementation 'com.nukkitx.protocol:bedrock-v560:2.9.15-SNAPSHOT'
 
     compileOnly(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
     annotationProcessor(group: 'org.projectlombok', name: 'lombok', version: lombokVersion)
