@@ -4,6 +4,7 @@ import com.nukkitx.protocol.bedrock.BedrockServerSession;
 import com.nukkitx.protocol.bedrock.data.PacketCompressionAlgorithm;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.packet.*;
+import nucleon.event.player.PlayerPreLoginEvent;
 import nucleon.network.Network;
 import nucleon.player.PlayerChainData;
 
@@ -53,11 +54,33 @@ public class PlayerLoginPacketHandler implements BedrockPacketHandler {
 
     @Override
     public boolean handle(LoginPacket packet) {
-        var chainData = PlayerChainData.read(packet);
+        final PlayerChainData chainData;
+        try {
+            chainData = PlayerChainData.read(packet);
+        } catch (IllegalArgumentException ex) {
+            session.disconnect("Login failed");
+            return false;
+        }
 
-        session.setPacketHandler(new ResourcePackPacketHandler(session, chainData));
+        try {
+            var event = new PlayerPreLoginEvent(chainData);
+            event.call();
 
-        sendPlayStatusPacket(PlayStatusPacket.Status.LOGIN_SUCCESS);
+            switch (event.getResult()) {
+                case REJECTED:
+                    session.disconnect(event.getRejectReason());
+                    return false;
+
+                case ACCEPTED:
+                    session.setPacketHandler(new ResourcePackPacketHandler(session, chainData));
+                    sendPlayStatusPacket(PlayStatusPacket.Status.LOGIN_SUCCESS);
+                    break;
+            }
+
+        } catch (Exception ex) {
+            session.disconnect("Login error");
+            return false;
+        }
         return true;
     }
 }
