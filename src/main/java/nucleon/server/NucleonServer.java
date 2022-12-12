@@ -3,6 +3,7 @@ package nucleon.server;
 import lombok.Getter;
 import nucleon.network.Network;
 import nucleon.player.PlayerManager;
+import nucleon.world.WorldManager;
 
 public final class NucleonServer {
 
@@ -26,6 +27,7 @@ public final class NucleonServer {
 
     private void init() {
         PlayerManager.init();
+        WorldManager.init();
         // init: item, block, entity, world (generators), network
         var initializer = new ServerInitializer();
         // load plugins. for each plugin run method onLoad(initializer)
