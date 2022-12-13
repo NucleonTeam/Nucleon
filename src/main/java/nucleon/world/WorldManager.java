@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class WorldManager {
 
     private static WorldManager instance = null;
+    public static World defaultWorld; //TODO: DELETE IT AFTER IMPLEMENTATION CREATING DEFAULT WORLD BY CONFIGURATION
 
     private final ConcurrentHashMap<UUID, World> worlds = new ConcurrentHashMap<>();
 

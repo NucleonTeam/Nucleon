@@ -1,8 +1,10 @@
 package nucleon.network.handler;
 
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
+import com.nukkitx.protocol.bedrock.data.GameType;
 import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.packet.*;
+import nucleon.event.player.PlayerLoginEvent;
 import nucleon.player.Player;
 
 public class InGamePacketHandler implements BedrockPacketHandler {
@@ -16,8 +18,44 @@ public class InGamePacketHandler implements BedrockPacketHandler {
     }
 
     void sendStartGamePacket() {
+        var loginEvent = new PlayerLoginEvent(player);
+        loginEvent.call();
+
+        if (player.isDisconnected() || player.isRemoved()) return;
+
+        var defaultWorld = loginEvent.getSpawningWorld();
+        if (defaultWorld != null) {
+            player.setWorld(defaultWorld);
+            player.setPosition(loginEvent.getSpawnPosition());
+        }
+
+        if (player.getWorld() == null) {
+            session.disconnect("Default world not found");
+            return;
+        }
+
         var startGamePacket = new StartGamePacket();
-        //TODO
+        startGamePacket.setUniqueEntityId(player.getEntityId());
+        startGamePacket.setRuntimeEntityId(player.getEntityId());
+        startGamePacket.setPlayerGameType(player.getGameMode().getType());
+        startGamePacket.setPlayerPosition(player.getPosition().toFloat());
+        startGamePacket.setRotation(player.getRotation().toVector2());
+        startGamePacket.setSeed(-1L);
+        startGamePacket.setDimensionId(player.getWorld().getDimension().getId());
+        startGamePacket.setLevelGameType(GameType.SURVIVAL);
+        startGamePacket.setDifficulty(1);
+        startGamePacket.setDefaultSpawn(player.getPosition().toInt());
+        startGamePacket.setAchievementsDisabled(true);
+        startGamePacket.setDayCycleStopTime(-1);
+        startGamePacket.setRainLevel(0);
+        startGamePacket.setLightningLevel(0);
+        startGamePacket.setCommandsEnabled(true);
+        startGamePacket.getGamerules(); //TODO: create game rules
+        startGamePacket.setLevelId("");
+        startGamePacket.setLevelName("world");
+        startGamePacket.setGeneratorId(1);
+        startGamePacket.getPlayerMovementSettings(); //...
+
         session.sendPacket(startGamePacket);
 
         var biomeDefinitionList = new BiomeDefinitionListPacket();
@@ -33,7 +71,7 @@ public class InGamePacketHandler implements BedrockPacketHandler {
         session.sendPacket(creativeContent);
 
         //TODO: update adventure packet
-        //TODO: update attributes packet
+        player.sendAttributes();
         //TODO: send packets with potions effects
         //TODO: set entity data packet
         //TODO: send world time

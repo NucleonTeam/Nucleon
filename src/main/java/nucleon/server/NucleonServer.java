@@ -3,6 +3,8 @@ package nucleon.server;
 import lombok.Getter;
 import nucleon.network.Network;
 import nucleon.player.PlayerManager;
+import nucleon.world.Dimension;
+import nucleon.world.NormalWorld;
 import nucleon.world.WorldManager;
 
 public final class NucleonServer {
@@ -37,6 +39,9 @@ public final class NucleonServer {
     public void start() {
         System.out.println("Starting Nucleon server...");
         init();
+
+        WorldManager.defaultWorld = new NormalWorld(Dimension.OVERWORLD);
+
         // load levels
         network.start();
 
