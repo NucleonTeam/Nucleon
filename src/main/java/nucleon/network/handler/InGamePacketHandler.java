@@ -75,6 +75,12 @@ public class InGamePacketHandler implements BedrockPacketHandler {
         //TODO: send packets with potions effects
         //TODO: set entity data packet
         //TODO: send world time
+
+        player.addViewer(player);
+
+        var playStatusPacket = new PlayStatusPacket();
+        playStatusPacket.setStatus(PlayStatusPacket.Status.PLAYER_SPAWN);
+        player.sendPacket(playStatusPacket);
     }
 
     @Override

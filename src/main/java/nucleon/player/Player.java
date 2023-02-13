@@ -3,6 +3,8 @@ package nucleon.player;
 import com.nukkitx.network.util.DisconnectReason;
 import com.nukkitx.protocol.bedrock.BedrockPacket;
 import com.nukkitx.protocol.bedrock.BedrockServerSession;
+import com.nukkitx.protocol.bedrock.data.inventory.ItemData;
+import com.nukkitx.protocol.bedrock.packet.AddPlayerPacket;
 import com.nukkitx.protocol.bedrock.packet.UpdateAttributesPacket;
 import lombok.Getter;
 import lombok.NonNull;
@@ -75,5 +77,26 @@ public final class Player extends EntityLiving {
         this.gameMode = gameMode;
 
         //TODO: send packet
+    }
+
+    @Override
+    public void addViewer(Player player) {
+        if (isViewer(player)) return;
+        viewers.add(player.getId());
+        player.viewing.add(this);
+
+        if (player.isDisconnected() || player.isRemoved()) return;
+
+        var pk = new AddPlayerPacket();
+        pk.setUuid(player.getId());
+        pk.setRuntimeEntityId(getEntityId());
+        pk.setUniqueEntityId(getEntityId());
+        pk.setPosition(getPosition().toFloat());
+        pk.setMotion(getMotion().toFloat());
+        pk.setRotation(getRotation());
+        pk.setDeviceId(getChainData().getDeviceId());
+        pk.setUsername(getName());
+        pk.setHand(ItemData.AIR);
+        player.sendPacket(pk);
     }
 }
