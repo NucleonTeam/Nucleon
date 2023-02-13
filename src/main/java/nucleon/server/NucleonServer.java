@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import nucleon.network.Network;
 import nucleon.player.PlayerManager;
+import nucleon.registry.Registry;
 import nucleon.world.Dimension;
 import nucleon.world.NormalWorld;
 import nucleon.world.WorldManager;
@@ -15,6 +16,7 @@ public final class NucleonServer {
 
     @Getter private final ServerSettings settings;
     @Getter private volatile boolean started;
+    @Getter private boolean initialized = false;
 
     @Getter private final Network network;
 
@@ -30,12 +32,17 @@ public final class NucleonServer {
     }
 
     private void init() {
+        var completeInitialization = Registry.init(this);
+
         PlayerManager.init();
         WorldManager.init();
+
         // init: item, block, entity, world (generators), network
-        var initializer = new ServerInitializer();
         // load plugins. for each plugin run method onLoad(initializer)
-        // block all initializers
+
+        initialized = true;
+        completeInitialization.subscribe();
+        log.info("Server was fully initialized");
     }
 
     public void start() {
