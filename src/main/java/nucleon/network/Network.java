@@ -1,7 +1,7 @@
 package nucleon.network;
 
 import com.nukkitx.protocol.bedrock.*;
-import com.nukkitx.protocol.bedrock.v560.Bedrock_v560;
+import com.nukkitx.protocol.bedrock.v567.Bedrock_v567;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;
 import lombok.extern.log4j.Log4j2;
@@ -14,7 +14,7 @@ import java.util.concurrent.CompletionException;
 @Log4j2(topic = "network")
 public class Network implements BedrockServerEventHandler {
 
-    public static final BedrockPacketCodec CODEC = Bedrock_v560.V560_CODEC;
+    public static final BedrockPacketCodec CODEC = Bedrock_v567.V567_CODEC;
 
     private final BedrockServer bedrockServer;
     private final InetSocketAddress address;

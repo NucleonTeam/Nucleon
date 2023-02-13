@@ -9,8 +9,8 @@ group 'nucleon'
 version '1.0-SNAPSHOT'
 
 java {
-    sourceCompatibility JavaVersion.VERSION_11
-    targetCompatibility JavaVersion.VERSION_11
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
 }
 
 application {
@@ -36,9 +36,9 @@ dependencies {
     implementation(group: 'org.apache.commons', name: 'commons-lang3', version: commonsLang3Version)
     implementation(group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion)
     implementation(group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: log4jVersion)
-    implementation 'com.google.code.gson:gson:2.10'
+    implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'io.projectreactor:reactor-core:3.5.0'
-    implementation 'com.nukkitx.protocol:bedrock-v560:2.9.15-SNAPSHOT'
+    implementation 'com.nukkitx.protocol:bedrock-v567:2.9.16-SNAPSHOT'
 
     compileOnly "org.projectlombok:lombok:1.18.24"
     annotationProcessor "org.projectlombok:lombok:1.18.24"
