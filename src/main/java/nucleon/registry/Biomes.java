@@ -6,6 +6,7 @@ import lombok.extern.log4j.Log4j2;
 import nucleon.nbt.CompoundTag;
 import nucleon.nbt.Tag;
 import nucleon.world.biome.Biome;
+import nucleon.world.biome.DefaultBiome;
 import reactor.util.annotation.NonNull;
 
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class Biomes {
     private NbtMap finallyBiomeDefinitionNbt = null;
 
     Biomes() {
-
+        registerDefaultBiomes();
     }
 
     public void registerBiome(Biome biome) {
@@ -51,5 +52,9 @@ public class Biomes {
         var pk = new BiomeDefinitionListPacket();
         pk.setDefinitions(finallyBiomeDefinitionNbt);
         return pk;
+    }
+
+    private void registerDefaultBiomes() {
+        registerBiome(new DefaultBiome());
     }
 }
