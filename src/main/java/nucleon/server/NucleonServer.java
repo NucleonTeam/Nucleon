@@ -1,12 +1,14 @@
 package nucleon.server;
 
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import nucleon.network.Network;
 import nucleon.player.PlayerManager;
 import nucleon.world.Dimension;
 import nucleon.world.NormalWorld;
 import nucleon.world.WorldManager;
 
+@Log4j2
 public final class NucleonServer {
 
     @Getter private static NucleonServer instance = null;
@@ -37,7 +39,7 @@ public final class NucleonServer {
     }
 
     public void start() {
-        System.out.println("Starting Nucleon server...");
+        log.info("Starting Nucleon server...");
         init();
 
         WorldManager.defaultWorld = new NormalWorld(Dimension.OVERWORLD);
@@ -48,6 +50,8 @@ public final class NucleonServer {
         started = true;
         // for each plugin run method onEnable()
         // main loop
+
+        log.info("Server was started");
         while (started) {
             Thread.onSpinWait();
         }
@@ -56,6 +60,8 @@ public final class NucleonServer {
     }
 
     private void onStop() {
+        log.info("Stopping server...");
+
         // kick all players
         network.stop();
         // unload all worlds
