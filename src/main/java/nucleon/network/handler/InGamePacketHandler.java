@@ -6,6 +6,7 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.packet.*;
 import nucleon.event.player.PlayerLoginEvent;
 import nucleon.player.Player;
+import nucleon.registry.Registry;
 
 public class InGamePacketHandler implements BedrockPacketHandler {
 
@@ -58,9 +59,7 @@ public class InGamePacketHandler implements BedrockPacketHandler {
 
         session.sendPacket(startGamePacket);
 
-        var biomeDefinitionList = new BiomeDefinitionListPacket();
-        //TODO: biome definition list
-        session.sendPacket(biomeDefinitionList);
+        session.sendPacket(Registry.biomes().prepareBiomeDefinitionPacket());
 
         var entityIdentifiers = new AvailableEntityIdentifiersPacket();
         //TODO: entity identifiers

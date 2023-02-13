@@ -9,6 +9,7 @@ public final class Registry {
     private static Registry instance = null;
 
     private final NucleonServer server;
+    private final Biomes biomes = new Biomes();
 
     private Registry(@NonNull NucleonServer server) {
         this.server = server;
@@ -20,7 +21,7 @@ public final class Registry {
         instance = new Registry(server);
 
         return Mono.fromRunnable(() -> {
-            //...
+            instance.biomes.completeInitialization();
         });
     }
 
@@ -29,5 +30,10 @@ public final class Registry {
         if (instance.server.isInitialized()){
             throw new IllegalAccessError("You can't register new content after server initialization");
         }
+    }
+
+    public static Biomes biomes() {
+        if (instance == null) throw new IllegalStateException("Registry module is not initialized");
+        return instance.biomes;
     }
 }
