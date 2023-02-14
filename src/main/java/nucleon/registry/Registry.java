@@ -10,6 +10,7 @@ public final class Registry {
 
     private final NucleonServer server;
     private final Biomes biomes = new Biomes();
+    private final Entities entities = new Entities();
 
     private Registry(@NonNull NucleonServer server) {
         this.server = server;
@@ -22,6 +23,7 @@ public final class Registry {
 
         return Mono.fromRunnable(() -> {
             instance.biomes.completeInitialization();
+            instance.entities.completeInitialization();
         });
     }
 
@@ -35,5 +37,10 @@ public final class Registry {
     public static Biomes biomes() {
         if (instance == null) throw new IllegalStateException("Registry module is not initialized");
         return instance.biomes;
+    }
+
+    public static Entities entities() {
+        if (instance == null) throw new IllegalStateException("Registry module is not initialized");
+        return instance.entities;
     }
 }

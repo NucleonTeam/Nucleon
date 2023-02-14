@@ -60,10 +60,7 @@ public class InGamePacketHandler implements BedrockPacketHandler {
         session.sendPacket(startGamePacket);
 
         session.sendPacket(Registry.biomes().prepareBiomeDefinitionPacket());
-
-        var entityIdentifiers = new AvailableEntityIdentifiersPacket();
-        //TODO: entity identifiers
-        session.sendPacket(entityIdentifiers);
+        session.sendPacket(Registry.entities().prepareAvailableEntityIdentifiersPacket());
 
         var creativeContent = new CreativeContentPacket();
         //TODO: creative content
