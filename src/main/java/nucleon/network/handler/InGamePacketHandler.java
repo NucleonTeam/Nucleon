@@ -6,7 +6,10 @@ import com.nukkitx.protocol.bedrock.handler.BedrockPacketHandler;
 import com.nukkitx.protocol.bedrock.packet.*;
 import nucleon.event.player.PlayerLoginEvent;
 import nucleon.player.Player;
+import nucleon.registry.Items;
 import nucleon.registry.Registry;
+
+import java.util.ArrayList;
 
 public class InGamePacketHandler implements BedrockPacketHandler {
 
@@ -56,6 +59,7 @@ public class InGamePacketHandler implements BedrockPacketHandler {
         startGamePacket.setLevelName("world");
         startGamePacket.setGeneratorId(1);
         startGamePacket.getPlayerMovementSettings(); //...
+        startGamePacket.setItemEntries(Registry.items().getItemEntries());
 
         session.sendPacket(startGamePacket);
 
@@ -65,6 +69,10 @@ public class InGamePacketHandler implements BedrockPacketHandler {
         var creativeContent = new CreativeContentPacket();
         //TODO: creative content
         session.sendPacket(creativeContent);
+
+        var craftingData = new CraftingDataPacket();
+        //TODO: crafting data
+        session.sendPacket(craftingData);
 
         //TODO: update adventure packet
         player.sendAttributes();
